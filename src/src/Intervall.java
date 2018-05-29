@@ -1,5 +1,5 @@
 package src;
-
+ 
 import static src.Hilfsmethoden.ueberpruefeDouble;;
 /**
  * 

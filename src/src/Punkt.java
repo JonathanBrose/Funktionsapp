@@ -1,7 +1,7 @@
 package src;
 import static src.Hilfsmethoden.ueberpruefeDouble;
 import com.google.common.math.DoubleMath;
-
+ 
 /**
  * Klasse, die einen 2dimensionalen Punkt repr&auml;sentiert.
  * 

@@ -23,6 +23,7 @@ public class Cos extends Funktionsteil {
 	public Cos(double a) {
 		this.a = a;
 	}
+	
 
 	@Override
 	public Funktionsteil gibAbleitung() {

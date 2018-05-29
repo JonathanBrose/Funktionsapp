@@ -1,12 +1,14 @@
 package src;
-
+ 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+
 import com.google.common.math.DoubleMath;
+
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextField;
 
 /**
  * Statische Klasse die einige statischen Methoden beinhaltet, die in den anderen Klassen benoetigt werden.

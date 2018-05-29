@@ -1,5 +1,5 @@
 package src;
-
+ 
 import static src.Hilfsmethoden.runde;
 import static src.Vereinfachung.HochpunktName;
 import static src.Vereinfachung.NullpunktName;

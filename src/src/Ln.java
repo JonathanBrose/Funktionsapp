@@ -1,5 +1,5 @@
 package src;
-
+ 
 import static src.Hilfsmethoden.runde;
 /**
  * Diese Klasse stellt eine Funktion der Form <code>f(x)= a*ln(x) dar.</code>.

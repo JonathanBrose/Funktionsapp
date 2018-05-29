@@ -1,5 +1,5 @@
 package src;
-
+ 
 /**
  * Klasse die mehrere {@link Funktionsteil}e beinhaltet. Abstrakte Klasse, Vaterklasse von {@link FaktorVerknuepfung}, {@link Verkettung} und 
  * {@link AddVerknuepfung}

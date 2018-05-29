@@ -1,5 +1,5 @@
 package src;
-
+ 
 /**
  * Klasse die eine Verkettung zweier Funktionen folgender Form darstellt:<br>
  * <code>f(x) = f(u(x))</code>

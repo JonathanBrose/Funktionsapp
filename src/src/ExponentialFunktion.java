@@ -1,5 +1,5 @@
 package src;
-
+ 
 import static src.Hilfsmethoden.runde;
 /**
  * Klasse, welche eine Exponentialfunktion der Form

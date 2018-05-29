@@ -1,5 +1,5 @@
 package src;
-
+ 
 import static src.Hilfsmethoden.runde;
 /**
  * Diese Klasse stellt eine Exponentialfunktion der Form <code>f(x)= a* x<sup>x</sup></code> dar.
