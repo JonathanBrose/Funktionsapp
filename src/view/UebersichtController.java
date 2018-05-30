@@ -68,6 +68,7 @@ public class UebersichtController {
 	 */
 	@FXML
 	public void initialize() {
+	
 		derPlotter = new Plotter(dasCanvas);
 		dasFunktionsLabelPane.setExpanded(true);
 		zeichne();

@@ -138,10 +138,11 @@ public class Plotter {
 			return;
 		if (!derKurvendisskusionController.sollenPunkteAngezeigtWerden())
 			return;
-		plottePunktListe(derKurvendisskusionController.gibNullstellen(), dieFarbe);
-		plottePunktListe(derKurvendisskusionController.gibExtrempunkte(), dieFarbe);
-		plottePunktListe(derKurvendisskusionController.gibSattelpunkte(), dieFarbe);
-		plottePunktListe(derKurvendisskusionController.gibWendepunkte(), dieFarbe);
+		ArrayList<Punkt> dieBenutztenPunkte = new ArrayList<Punkt>();
+		plottePunktListe(derKurvendisskusionController.gibNullstellen(), dieBenutztenPunkte, dieFarbe);
+		plottePunktListe(derKurvendisskusionController.gibExtrempunkte(), dieBenutztenPunkte, dieFarbe);
+		plottePunktListe(derKurvendisskusionController.gibSattelpunkte(), dieBenutztenPunkte, dieFarbe);
+		plottePunktListe(derKurvendisskusionController.gibWendepunkte(), dieBenutztenPunkte, dieFarbe);
 
 	}
 	/**
@@ -287,10 +288,13 @@ public class Plotter {
 	/**
 	 * Zeichnet eine {@link ArrayList} mit {@link Punkt}
 	 * @param diePunktListe die Liste mit den Punkten, die gezeichnet werden sollen.
+	 * @param dieBenutztenPunkte Liste mit den Punkten, die schon gezeichnet wurden.
 	 * @param dieFarbe Farbe in der die Punkte gezeichnet werden sollen.
 	 */
-	private void plottePunktListe(ArrayList<Punkt> diePunktListe, Color dieFarbe) {
+	private void plottePunktListe(ArrayList<Punkt> diePunktListe, ArrayList<Punkt> dieBenutztenPunkte, Color dieFarbe) {
 		double punktRadius = 3;
+		
+		
 
 		if (diePunktListe == null || diePunktListe.size() == 0)
 			return;
@@ -302,18 +306,42 @@ public class Plotter {
 		punktRadius *= berechneSchriftGroeﬂe() / 14;
 
 		derGrafikKontext.setFont(new Font(schriftGroeﬂe));
+		
 		for (Punkt derPunkt : diePunktListe) {
-			derGrafikKontext.setFill(Color.BLACK);
-			derGrafikKontext.fillOval(xVerschiebung + derPunkt.gibX() * abstand + dX * abstand - punktRadius,
-					yVerschiebung - derPunkt.gibY() * abstand - dY * abstand - punktRadius, punktRadius * 2,
-					punktRadius * 2);
-			derGrafikKontext.setFill(dieFarbe);
 			double yPos = yVerschiebung - derPunkt.gibY() * abstand - dY * abstand - punktRadius * 2;
+			if(uberpruefePunktBenutzt(dieBenutztenPunkte, derPunkt)) {
+				yPos -= schriftGroeﬂe; 
+			}else {
+				dieBenutztenPunkte.add(derPunkt);
+				//-------Punkt-------
+				derGrafikKontext.setFill(Color.BLACK);
+				derGrafikKontext.fillOval(xVerschiebung + derPunkt.gibX() * abstand + dX * abstand - punktRadius,
+						yVerschiebung - derPunkt.gibY() * abstand - dY * abstand - punktRadius, punktRadius * 2,
+						punktRadius * 2);
+			}
+			//---------Beschriftung----
+			derGrafikKontext.setFill(dieFarbe);
+			
 			if (derPunkt.gibName().equals("(T)"))
 				yPos += 3 * punktRadius + schriftGroeﬂe;
 			derGrafikKontext.fillText(derPunkt.gibName(),
-					xVerschiebung + derPunkt.gibX() * abstand + dX * abstand + punktRadius, yPos);
+					xVerschiebung + derPunkt.gibX() * abstand + dX * abstand + punktRadius,
+					yPos);
+			
+		
 		}
+	}
+	/**
+	 * &Uuuml;berpr&uuml;ft ob in der ArrayList ein Punkt mit den gleichen Werten, wie derPunkt ist.
+	 * @param dieBenutztenPunkte Liste mit den bereits geplotteten Punkten.
+	 * @param derPunkt {@link Punkt} der auf Gleichheit &uuml;berpr&uuml;ft werden soll.
+	 * @return true wenn ein gleicher Punkt enthalten ist, ansonsten false;
+	 */
+	private boolean uberpruefePunktBenutzt(ArrayList<Punkt> dieBenutztenPunkte, Punkt derPunkt) {
+		for(Punkt derBenutztePunkt : dieBenutztenPunkte) {
+			if(derBenutztePunkt.entspricht(derPunkt))return true;
+		}
+		return false;
 	}
 	/**
 	 * Hilfsmethode die XVerschiebung f&uuml;r die Beschriftung der X-Achse Begrenzt.

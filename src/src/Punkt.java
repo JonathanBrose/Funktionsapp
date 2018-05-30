@@ -67,7 +67,7 @@ public class Punkt {
 	 * @return true, wenn beide Punkte die gleichen x- und y-Werte haben.
 	 * 
 	 */
-	public boolean isEqualTo(Punkt derPunkt) {
+	public boolean entspricht(Punkt derPunkt) {
 		if (DoubleMath.fuzzyEquals(gibX(), derPunkt.gibX(), 0.00001)) {
 			if (DoubleMath.fuzzyEquals(gibY(), derPunkt.gibY(), 0.00001)) {
 				return true;
