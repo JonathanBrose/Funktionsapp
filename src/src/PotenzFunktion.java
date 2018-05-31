@@ -92,12 +92,12 @@ public class PotenzFunktion extends Funktionsteil {
 		} else if (p == 1) {
 			s += "" + variablenName + "";
 		} else if (p == 0.5) {
-			s += "√(" + variablenName + ")";
+			s += "\u221A(" + variablenName + ")";
 		}  else if (p < 0) {
 			p *= -1;
 			s += "/";
 			if (p == 0.5) {
-				s += "√(" + variablenName + ")";
+				s += "\u221A(" + variablenName + ")";
 			}  else if (p == 1) {
 				s += variablenName;
 			}else {
@@ -147,7 +147,7 @@ public class PotenzFunktion extends Funktionsteil {
 			p *= -1;
 			verkettungString[0]+="/";
 			if (p == 0.5) {
-				verkettungString[0]+= "√(";
+				verkettungString[0]+= "\u221A(";
 				verkettungString[1]= ")";
 			} else if (p == 1) {
 				verkettungString[0]+= "(";
@@ -157,7 +157,7 @@ public class PotenzFunktion extends Funktionsteil {
 			verkettungString[1] = ")^" + (p == (int) (p) ? (int) (p) + "" : ueberpruefeDouble(p) + "");
 			}
 		} else if (p == 0.5) {
-			verkettungString[0]+= "√(";
+			verkettungString[0]+= "\u221A(";
 			verkettungString[1]= ")";
 		} else {
 			verkettungString[0] += "(";
