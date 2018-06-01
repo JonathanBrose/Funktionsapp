@@ -69,7 +69,7 @@ public enum Funktionstyp {
 	 * Enth&auml;lt die f&uuml;r {@link EingabeController} n&ouml;tige Informationen zum Erstellen einer {@link Verkettung} und die Passende Beschreibung.
 	 */
 	Verkettung("f(x) = u(v(x))", new String[] {},
-			"Ein Verkettung besteht aus zwei einzelenen Funktionsteilen.\n"
+			"Eine Verkettung besteht aus zwei einzelenen Funktionsteilen.\n"
 			+ "z.B.: Sin(x) und 2x^3, das ergibt als Verkettung: Sin(2x^3)\n"
 			+ "Dabei ist die erste Funktion die ‰uﬂere und die zweite Funktion die innere."), 
 	/**

@@ -332,7 +332,7 @@ public class Plotter {
 		}
 	}
 	/**
-	 * &Uuuml;berpr&uuml;ft ob in der ArrayList ein Punkt mit den gleichen Werten, wie derPunkt ist.
+	 * &Uuml;berpr&uuml;ft ob in der ArrayList ein Punkt mit den gleichen Werten, wie derPunkt ist.
 	 * @param dieBenutztenPunkte Liste mit den bereits geplotteten Punkten.
 	 * @param derPunkt {@link Punkt} der auf Gleichheit &uuml;berpr&uuml;ft werden soll.
 	 * @return true wenn ein gleicher Punkt enthalten ist, ansonsten false;

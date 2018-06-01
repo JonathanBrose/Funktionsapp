@@ -1,5 +1,4 @@
 package view;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -10,6 +9,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.Border;
@@ -90,6 +90,7 @@ public class UebersichtController {
 		};
 		new Thread(r).start();
 	}
+	
 	/**
 	 * Entfernt ein Label mit der Info, dass mit STRG + Mausrad gezoomt werden kann.
 	 */
@@ -97,8 +98,21 @@ public class UebersichtController {
 		Runnable r1 = () -> {
 			BorderPane bp = (BorderPane) dasCanvas.getParent();
 			bp.setTop(null);
+			aktualisiereCanvas();
 		};
 		Platform.runLater(r1);
+	}
+	
+	/**
+	 * Gibt die H&ouml;he des Info Labels &uuml;ber dem Canvas zur&uuml;ck.
+	 * @return die H&ouml;he.
+	 */
+	private double gibSTRGHoehe() {
+		BorderPane dasBorderPane = (BorderPane) dasCanvas.getParent();
+		if(dasBorderPane.getTop()==null) return 0;
+		
+		Label dasStrgInfoLabel= (Label) dasBorderPane.getTop();
+		return dasStrgInfoLabel.getHeight();
 	}
 	
 	/**
@@ -147,7 +161,7 @@ public class UebersichtController {
 			Runnable r2 = () -> {
 				BorderPane dasBorderPane = ((BorderPane) dasCanvas.getParent());
 				dasCanvas.setWidth(dasBorderPane.getWidth());
-				dasCanvas.setHeight(dasBorderPane.getHeight() - dasFunktionsLabelPane.getHeight());
+				dasCanvas.setHeight(dasBorderPane.getHeight() - dasFunktionsLabelPane.getHeight()- gibSTRGHoehe());
 				zeichne();
 			};
 			Platform.runLater(r2);
