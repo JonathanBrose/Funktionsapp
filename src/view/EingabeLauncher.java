@@ -33,6 +33,12 @@ public class EingabeLauncher extends Application {
 	public  void öffne() {
 		dieHauptStage.show();
 	}
+	public Scene gibSzene() {
+		return dieHauptStage.getScene();
+	}
+	public BorderPane gibUrsprungsPane() {
+		return dasUrsprungsBorderPane;
+	}
 	/**
 	 * Getter f&uuml;r den erstellten {@link MehrfachEingabeController}.
 	 * @return {@link #derMehrfachEingabeController}
@@ -98,7 +104,6 @@ public class EingabeLauncher extends Application {
 		initialisiereEingabeController1();
 		initialisiereEingabeController2();
 		this.dieHauptStage.getIcons().add(new Image(getClass().getResourceAsStream("iconPi.jpg")));
-		öffne();
 	}
 	/**
 	 * Setzt den Titel des Fensters ({@link #dieHauptStage}).

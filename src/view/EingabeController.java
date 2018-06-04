@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import src.Cos;
@@ -53,6 +54,8 @@ public class EingabeController {
 	private TextArea dieBeschreibungsTextArea;
 	@FXML
 	private GridPane dasButtonGridPane;
+	@FXML
+	private BorderPane dasBorderPane;
 	/**
 	 * Wird gesetzt, falls dieser {@link EingabeController} von einem {@link MehrfachEingabeController} erzeugt wurde.
 	 */
@@ -123,23 +126,15 @@ public class EingabeController {
 	 * {@link #organisiereButtons()} &Uuml;berpr&uuml;ft welche Buttons aktiv sind.
 	 */
 	private void passeTextFelderGroeﬂeAn() {
-		dasTextField1.textProperty().addListener(new ChangeListener<String>() {
-
-			@Override
-			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
-				dasTextField1.setPrefWidth(28 + dasTextField1.getText().length() * 8); // why 8? Totally trial number.
+		dasTextField1.textProperty().addListener(
+				(ObservableValue<? extends String> arg0, String arg1, String arg2)-> {
+				dasTextField1.setPrefWidth(28 + dasTextField1.getText().length() * 8); 
 				organisiereButtons();
-			}
-
 		});
-		dasTextField2.textProperty().addListener(new ChangeListener<String>() {
-
-			@Override
-			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
-				dasTextField2.setPrefWidth(28 + dasTextField2.getText().length() * 8); // why 8? Totally trial number.
+		dasTextField2.textProperty().addListener(
+				(ObservableValue<? extends String> arg0, String arg1, String arg2)-> {
+				dasTextField2.setPrefWidth(28 + dasTextField2.getText().length() * 8); 
 				organisiereButtons();
-			}
-
 		});
 	}
 
@@ -325,6 +320,7 @@ public class EingabeController {
 		}).start();
 
 	}
+	
 
 	/**
 	 * Setzt den Text von {@link #dasTextField1} und {@link #dasTextField2} auf "".

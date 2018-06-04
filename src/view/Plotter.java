@@ -286,7 +286,7 @@ public class Plotter {
 		}
 	}
 	/**
-	 * Zeichnet eine {@link ArrayList} mit {@link Punkt}
+	 * Zeichnet eine {@link ArrayList} mit {@link Punkt}en
 	 * @param diePunktListe die Liste mit den Punkten, die gezeichnet werden sollen.
 	 * @param dieBenutztenPunkte Liste mit den Punkten, die schon gezeichnet wurden.
 	 * @param dieFarbe Farbe in der die Punkte gezeichnet werden sollen.
@@ -304,7 +304,7 @@ public class Plotter {
 		double xVerschiebung = dasCanvas.getWidth() / 2;
 		double schriftGroeﬂe = berechneSchriftGroeﬂe();
 		punktRadius *= berechneSchriftGroeﬂe() / 14;
-
+		
 		derGrafikKontext.setFont(new Font(schriftGroeﬂe));
 		
 		for (Punkt derPunkt : diePunktListe) {

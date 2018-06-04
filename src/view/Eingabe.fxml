@@ -108,11 +108,16 @@
                </GridPane.margin>
             </ComboBox>
             <Separator GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-            <TextArea fx:id="dieBeschreibungsTextArea" editable="false" focusTraversable="false" wrapText="true" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="2">
-               <font>
-                  <Font size="22.0" />
-               </font></TextArea>
             <Separator halignment="LEFT" orientation="VERTICAL" GridPane.halignment="RIGHT" />
+            <BorderPane fx:id="dasBorderPane" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="2">
+               <center>
+                  <TextArea fx:id="dieBeschreibungsTextArea" editable="false" focusTraversable="false" wrapText="true" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </TextArea>
+               </center>
+            </BorderPane>
          </children>
       </GridPane>
    </center>
