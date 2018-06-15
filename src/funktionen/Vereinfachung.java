@@ -113,8 +113,8 @@ public class Vereinfachung {
 					for (Funktionsteil x : ((AddVerknuepfung) dieVereinfachteAddVerknuepfung).gibFunktionsteile()) {
 						funktionsTeile.add(x);
 					}
-					dieZuLoeschendenFunktionsteile.add(dieAddVerknuepfung);
-
+						dieZuLoeschendenFunktionsteile.add(dieAddVerknuepfung);
+					
 				} else {
 					funktionsTeile.add(dieVereinfachteAddVerknuepfung);
 					dieZuLoeschendenFunktionsteile.add(dieAddVerknuepfung);
@@ -480,12 +480,14 @@ public class Vereinfachung {
 		((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().addAll(dieSinFunktionen);
 		((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().addAll(dieLnFunktionen);
 		((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().addAll(dieXExponentialFunktionen);
-		if(dieAddVerknuepfungFunktionen2.size()>0)
-		((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().add(new AddVerknuepfung(dieAddVerknuepfungFunktionen2));
+		if(dieAddVerknuepfungFunktionen2.size() == 1)
+			((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().add(dieAddVerknuepfungFunktionen2.get(0));
+		else if(dieAddVerknuepfungFunktionen2.size()>0)
+			((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().add(new AddVerknuepfung(dieAddVerknuepfungFunktionen2));
+		
 		((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().addAll(dieExponentialFunktionen);
 		((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().addAll(dieNatuerlicheExponentialFunktionen);
 		
-
 		((FaktorVerknuepfung) dieFaktorVerknuepfung).fasseVorfaktorenZusammen();
 		((FaktorVerknuepfung) dieFaktorVerknuepfung).setzeA(dieFaktorVerknuepfung.gibA() * a);
 		if (dieFaktorVerknuepfung.gibA() == 0)

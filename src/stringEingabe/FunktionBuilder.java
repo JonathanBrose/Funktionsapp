@@ -216,7 +216,7 @@ public class FunktionBuilder {
 							double d = token1.gibWert() / Math.E;
 							Funktionsteil f;
 							if (DoubleMath.fuzzyEquals(d, Hilfsmethoden.runde(d, 1), 0.0001)) {
-								f = new Verkettung(new NatuerlicheExponentialFunktion(1),
+								f = new Verkettung(new NatuerlicheExponentialFunktion(d),
 										token2.gibFunktionsteil());
 								stack.fuegeHinzu(new Token(f));
 							} else {
@@ -447,9 +447,11 @@ public class FunktionBuilder {
 	}
 
 	public static void main(String args[]) {
-		String funktionsterm1 = "g(x) = e^(2x)";
+		String funktionsterm1 = "g(x) = 3x^2 + 5sin(4x-1)";
 		Funktion f = stringZuFunktion(funktionsterm1);
 		System.out.println(f);
+		System.out.println(f.gibAbleitung());
+		System.out.println(f.gibAbleitung(2));
 	}
 
 }

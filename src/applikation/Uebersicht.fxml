@@ -21,12 +21,12 @@
          <content>
             <BorderPane>
                <center>
-                  <ScrollPane vbarPolicy="NEVER" BorderPane.alignment="CENTER">
+                  <ScrollPane fx:id="dasScrollPane" fitToHeight="true" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets bottom="-10.0" left="-10.0" top="-10.0" />
                      </BorderPane.margin>
                      <content>
-                        <GridPane stylesheets="@radioButtons.css">
+                        <GridPane fx:id="dasFunktionenGridPane" stylesheets="@radioButtons.css">
                           <columnConstraints>
                             <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="25.0" minWidth="0.0" prefWidth="25.0" />
                             <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" />

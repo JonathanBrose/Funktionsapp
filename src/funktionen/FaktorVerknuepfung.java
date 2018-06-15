@@ -61,6 +61,8 @@ public class FaktorVerknuepfung extends Verknuepfung {
 			Funktionsteil dasRechteFunktionsteil=new FaktorVerknuepfung(dieRechtenFunktionsteile);
 			Funktionsteil dasLinkeFunktionsteil=(dieLinkenFunktionsteile.size() ==1? dieLinkenFunktionsteile.get(0): new FaktorVerknuepfung(dieLinkenFunktionsteile));
 			dieAbleitung = new AddVerknuepfung(new FaktorVerknuepfung(dasLinkeFunktionsteil,dasRechteFunktionsteil.gibAbleitung()),new FaktorVerknuepfung(dasLinkeFunktionsteil.gibAbleitung(),dasRechteFunktionsteil));
+		}else if(dieFunktionsTeile.size() == 1){
+			dieAbleitung = dieFunktionsTeile.get(0).gibAbleitung();
 		}else {
 			Funktionsteil u=dieFunktionsTeile.get(0), f=dieFunktionsTeile.get(1);
 			dieAbleitung = new AddVerknuepfung(new FaktorVerknuepfung(f,u.gibAbleitung()),new FaktorVerknuepfung(f.gibAbleitung(),u));
@@ -191,11 +193,14 @@ public class FaktorVerknuepfung extends Verknuepfung {
 	 * 
 	 */
 	public void fasseVorfaktorenZusammen() {
+		if(dieFunktionsTeile.size() == 0)
+			return;
 		double neuesA = 1;
 		for (Funktionsteil dasFunktionsteil : dieFunktionsTeile) {
 			neuesA *= dasFunktionsteil.gibA();
 			dasFunktionsteil.setzeA(1);
 		}
+		
 		dieFunktionsTeile.get(0).multipliziere(neuesA);
 	}
 	/**

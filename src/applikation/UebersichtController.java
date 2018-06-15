@@ -7,6 +7,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
@@ -17,6 +18,7 @@ import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
 public class UebersichtController {
@@ -48,6 +50,10 @@ public class UebersichtController {
 	private Button derHauptFunktButton3;
 	@FXML
 	private Button derHauptFunktButton4;
+	@FXML
+	private ScrollPane dasScrollPane;
+	@FXML 
+	private GridPane dasFunktionenGridPane;
 	/**
 	 * Speichert die letzte Position der Maus um bei einer Bewegung die differenz dem Plotter als deltaX zu &uuml;bergeben.
 	 */
