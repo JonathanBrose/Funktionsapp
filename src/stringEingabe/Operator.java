@@ -9,7 +9,8 @@ public enum Operator {
 	Potenz("^"),
 	Sin("sin"),
 	Cos("cos"),
-	Ln("ln");
+	Ln("ln"),
+	Wurzel("sqrt");
 	
 	private Operator(String s) {
 		this.dasZeichen = s;

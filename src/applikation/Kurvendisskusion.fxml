@@ -109,18 +109,13 @@
    <top>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="-Infinity" minWidth="10.0" prefWidth="300.0" />
+          <ColumnConstraints fillWidth="false" hgrow="ALWAYS" minWidth="10.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="derDefaultButton" mnemonicParsing="false" onAction="#setzeAufStandard" text="Default" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
-               <GridPane.margin>
-                  <Insets right="5.0" />
-               </GridPane.margin>
-            </Button>
             <GridPane GridPane.halignment="LEFT" GridPane.hgrow="NEVER">
               <columnConstraints>
                 <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="188.0" minWidth="10.0" prefWidth="124.0" />
@@ -139,18 +134,23 @@
                         <Insets left="5.0" right="3.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="dasTextField1" GridPane.columnIndex="1">
+                  <TextField fx:id="dasTextField1" promptText="linke Grenze" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="dasTextField2" GridPane.columnIndex="2" />
+                  <TextField fx:id="dasTextField2" promptText="rechte Grenze" GridPane.columnIndex="2" />
                </children>
                <padding>
                   <Insets bottom="10.0" top="10.0" />
                </padding>
             </GridPane>
-            <CheckBox fx:id="diePunkteAnzeigenCheckBox" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" text="Besondere Punkte in Übersicht zeigen" GridPane.columnIndex="1" />
+            <CheckBox fx:id="diePunkteAnzeigenCheckBox" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefWidth="500.0" text="Besondere Punkte in Übersicht zeigen" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" />
+            <Button fx:id="derDefaultButton" mnemonicParsing="false" onAction="#setzeAufStandard" text="Default" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin>
+            </Button>
          </children>
          <BorderPane.margin>
             <Insets bottom="10.0" top="10.0" />

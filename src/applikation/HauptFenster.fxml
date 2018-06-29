@@ -12,6 +12,7 @@
         <tabs>
           <Tab text="Übersicht" />
           <Tab onSelectionChanged="#ueberpruefeAkkordeon" text="Kurvendiskussion" />
+            <Tab text="Einstellungen" />
         </tabs>
       </TabPane>
    </center>

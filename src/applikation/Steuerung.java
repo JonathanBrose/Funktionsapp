@@ -60,6 +60,10 @@ public class Steuerung extends Application {
 	 * Der Controller von {@link #dasKurvendisskusionBorderPane}
 	 */
 	private KurvendisskusionController derKurvendisskusionController;
+	
+	private EinstellungenController derEinstellungsController;
+	private BorderPane dasEinstellungsBorderPane;
+	
 	/**
 	 * Speichert den Dateipfad aus dem der Nutzer zuletzt etwas geladen und/oder
 	 * gespeichert hat.
@@ -77,6 +81,7 @@ public class Steuerung extends Application {
 		this.dieHauptStage.getIcons().add(new Image(getClass().getResourceAsStream("iconPi.jpg")));
 		initialisiereKurvendisskusionController();
 		initialisiereUebersichtController();
+		initialisiereEinstellungenController();
 		initialisiereHauptFenster();
 		this.setzeFunktion(new Funktion());
 		
@@ -96,6 +101,7 @@ public class Steuerung extends Application {
 			derHauptFensterController.setzeSteuerung(this);
 			derHauptFensterController.setzeKurvendisskusion(dasKurvendisskusionBorderPane);
 			derHauptFensterController.setzeUebersicht(dasUebersichtBorderPane);
+			derHauptFensterController.setzeEinstellung(dasEinstellungsBorderPane);
 			Scene scene = new Scene(dasUrsprungsBorderPane);
 			scene.addEventFilter(MouseEvent.DRAG_DETECTED, new EventHandler<MouseEvent>() {
 				@Override
@@ -128,6 +134,22 @@ public class Steuerung extends Application {
 			e.printStackTrace();
 		}
 	}
+	private void initialisiereEinstellungenController() {
+		try {
+			FXMLLoader derLoader = new FXMLLoader();
+			derLoader.setLocation(Steuerung.class.getResource("Einstellungen.fxml"));
+			dasEinstellungsBorderPane = (BorderPane) derLoader.load();
+			derEinstellungsController = derLoader.getController();
+			derEinstellungsController.setzeSteuerung(this);
+			derUebersichtController.ladeFarben(derEinstellungsController);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	public void aktuallisiereFarbe() {
+		derUebersichtController.aktualisiereCss();
+		derUebersichtController.zeichne();
+	}
 
 	/**
 	 * L&auml;dt Kurvendisskusion.fxml und initialisiert
@@ -159,8 +181,8 @@ public class Steuerung extends Application {
 		this.dieFunktion = dieFunktion;
 		this.derUebersichtController.setzeFunktion(dieFunktion);
 		this.derUebersichtController.zeichne();
-		this.derKurvendisskusionController.setzeFunktion(dieFunktion);
 		this.derKurvendisskusionController.stoppeRechenThread();
+		this.derKurvendisskusionController.setzeFunktion(dieFunktion);
 		if (!derKurvendisskusionController.gibLaeuft())
 			this.derUebersichtController.ueberpruefeHauptFunktionsButtons();
 	}

@@ -1,16 +1,35 @@
 package applikation;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Optional;
+
+import javax.swing.text.html.StyleSheet;
+
 import funktionen.Funktion;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.binding.BooleanExpression;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.value.ObservableValue;
+import javafx.css.Stylesheet;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
+import javafx.scene.effect.Glow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -68,35 +87,94 @@ public class UebersichtController {
 	private Funktion dieStammfunktion, dieFunktion, dieErsteAbleitung, dieZweiteAbleitung;
 	
 	private Steuerung dieSteuerung;
+	private SimpleBooleanProperty touchPadScroll;
 	/**
 	 * Initialisiert die Funktions&uuml;bersicht und {@link #derPlotter}.
 	 * Wird direkt nach dem Konstruktor aufgerufen.
 	 */
+	private ColorWrapper dieStammFunktionFarbe, dieFunktionsfarbe,
+				dieAbleitungsFarbe, dieAbleitungsfarbe2, diePunkteFarbe;
 	@FXML
 	public void initialize() {
-	
+		
+		touchPadScroll = new SimpleBooleanProperty(true);
 		derPlotter = new Plotter(dasCanvas);
 		dasFunktionsLabelPane.setExpanded(true);
-		zeichne();
 		dasFunktionsLabelPane.expandedProperty().addListener((obs, oldB, newB) -> this.klappeFunktionsTitledPaneAus(oldB, newB));
 		dasFunktionsLabelPane.heightProperty().addListener((obs, oldB, newB) -> this.aktualisiereCanvas());
 		dasCanvas.setOnScroll(this::canvasScroll);
 		dasCanvas.setOnMouseDragOver(this::canvasVerschiebung);
 		dasCanvas.setOnMouseDragEntered(this::canvasVerschiebungStart);
 		dasCanvas.setOnZoom(this::canvasZoom);
-		initialisiereHauptFunktButtons();
+		initialisiereFarben();
+		aktualisiereCss();
+		zeichne();
+		initialisiereTooltips();
 		ueberpruefeHauptFunktionsButtons();
-		Runnable r = ()->{
-			try {
-				Thread.sleep(15*1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			loescheSTRGInfo();
-		};
-		new Thread(r).start();
 		setzeTextFieldListener();
+		loescheSTRGInfo();
 	}
+	private void initialisiereFarben() {
+		dieStammFunktionFarbe = new ColorWrapper(Color.DARKBLUE);
+		dieFunktionsfarbe = new ColorWrapper(Color.ORANGERED);
+		dieAbleitungsFarbe = new ColorWrapper(Color.GREEN);
+		dieAbleitungsfarbe2 = new ColorWrapper(Color.BLUEVIOLET);
+		diePunkteFarbe = new ColorWrapper(Color.RED);
+	}
+	public void aktualisiereCss() {
+		String style = ".radio-button .radio {\r\n" + 
+				"    -fx-border-width: 1px;\r\n" + 
+				"    -fx-border-color: #000;\r\n" + 
+				"    -fx-background-color: lightgray;\r\n" + 
+				"    -fx-background-image: null;\r\n" + 
+				"    -fx-border-radius: 9px;\r\n" + 
+				"    -fx-padding: 0px;\r\n" + 
+				"    \r\n" + 
+				"}\r\n" + 
+				".radio-button:selected .dot{\r\n" + 
+				"	 -fx-background-insets: 0px;\r\n" + 
+				"}\r\n" + 
+				".radio-button .dot {\r\n" + 
+				"    -fx-background-radius: 12px;\r\n" + 
+				"    -fx-padding: 9px;\r\n" + 
+				"}";
+		
+		style += ".stammfunktion:selected  .dot {"
+				+ " -fx-background-color: #"+ gibHtmlFarbe(dieStammFunktionFarbe)+";"
+				+ "}\n";
+		
+		style += ".funktion:selected  .dot {"
+				+ " -fx-background-color: #"+ gibHtmlFarbe(dieFunktionsfarbe)+";"
+				+ "}\n";
+		
+		style += ".ableitung1:selected  .dot {"
+				+ "-fx-background-color: #"+ gibHtmlFarbe(dieAbleitungsFarbe)+";"
+				+ "}\n";
+		
+		style += ".ableitung2:selected  .dot {"
+				+ "-fx-background-color: #"+gibHtmlFarbe(dieAbleitungsfarbe2)+ ";"
+				+ "}";
+		
+		File radioButtonDatei = new File("radioButtons.css");
+		try {
+			FileWriter derDateiSchreiber = new FileWriter(radioButtonDatei);
+			derDateiSchreiber.write(style);
+			derDateiSchreiber.close();
+			dasFunktionenGridPane.getStylesheets().clear();
+			dasFunktionenGridPane.getStylesheets().add("file:/"+radioButtonDatei.getAbsolutePath().replace("\\", "/"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	private String gibHtmlFarbe(ColorWrapper dieStammFunktionFarbe2) {
+		String s = dieStammFunktionFarbe2.toString();
+		s= s.substring(2, s.length());
+		return s.substring(0, s.length()-2);
+	}
+	
 	private void setzeTextFieldListener() {
 		aktiviereTextFieldAutomatischesWachsen(dasFunktionsTextField);
 		aktiviereTextFieldAutomatischesWachsen(dasAbleitungTextField1);
@@ -137,12 +215,20 @@ public class UebersichtController {
 	/**
 	 * Setzt ein {@link Tooltip} f&uuml;r die HauptFunktButtons.
 	 */
-	private void initialisiereHauptFunktButtons() {
+	private void initialisiereTooltips() {
 		Tooltip dasTooltip = new Tooltip();
 		dasTooltip.setText("Überschreibt die Funktion des Programms mit der Funktion links von diesem Knopf.");
 		derHauptFunktButton1.setTooltip(dasTooltip);
 		derHauptFunktButton3.setTooltip(dasTooltip);
 		derHauptFunktButton4.setTooltip(dasTooltip);
+		Tooltip dasTooltip1 = new Tooltip("Hier sehen sie die Stammfunktion.");
+		dasStammfunktionTextField.setTooltip(dasTooltip1);
+		Tooltip dasTooltip2 = new Tooltip("Geben sie hier die Funktion ein und drücken sie Enter.");
+		dasFunktionsTextField.setTooltip(dasTooltip2);
+		Tooltip dasTooltip3 = new Tooltip("Hier sehen sie die erste Ableitung.");
+		dasAbleitungTextField1.setTooltip(dasTooltip3);
+		Tooltip dasTooltip4 = new Tooltip("Hier sehen sie die zweite Ableitung.");
+		dasAbleitungTextField2.setTooltip(dasTooltip4);
 	}
 	/**
 	 * Initialisiert den Text der Labels. Dabei werden diese mit den Funktionstermen von {@link #dieStammfunktion}, {@link #dieFunktion}
@@ -197,17 +283,17 @@ public class UebersichtController {
 		derPlotter.plotteGitter();
 		derPlotter.plotteAchsen();
 		if (derStammFunktionButton.isSelected())
-			derPlotter.plotteFunktion(dieStammfunktion, Color.DARKBLUE);
+			derPlotter.plotteFunktion(dieStammfunktion, dieStammFunktionFarbe.gibFarbe());
 		if (derFunktionButton.isSelected()) {
-			derPlotter.plotteFunktion(dieFunktion, Color.ORANGERED);
+			derPlotter.plotteFunktion(dieFunktion, dieFunktionsfarbe.gibFarbe());
 			if (dieSteuerung != null)
 				derPlotter.plotteBesonderePunkte(dieSteuerung.gibKurvendisskusionController(),
-						Color.ORANGERED);
+						diePunkteFarbe.gibFarbe());
 		}
 		if (derErsteAbleitungButton.isSelected())
-			derPlotter.plotteFunktion(dieErsteAbleitung, Color.GREEN);
+			derPlotter.plotteFunktion(dieErsteAbleitung, dieAbleitungsFarbe.gibFarbe());
 		if (derZweiteAbleitungButton.isSelected())
-			derPlotter.plotteFunktion(dieZweiteAbleitung, Color.BLUEVIOLET);
+			derPlotter.plotteFunktion(dieZweiteAbleitung, dieAbleitungsfarbe2.gibFarbe());
 	}
 	/**
 	 * Sorgt daf&uuml;r, dass das {@link #dasFunktionsLabelPane} sich asuklappen kann, in dem {@link #dasCanvas}
@@ -222,10 +308,24 @@ public class UebersichtController {
 		}
 	}
 	@FXML
+	private void funktionsTextFieldKlick() {
+		if(!dasFunktionsTextField.isEditable()) {
+			String inhalt = "Funktion kann nicht bearbeitet werden, da noch Berechnungen im Kurvendisskusion Tab laufen. Wollen sie diese Stoppen?";
+			Alert alert = new Alert(AlertType.CONFIRMATION, inhalt, ButtonType.YES, ButtonType.CANCEL);
+			alert.setTitle("Funktion kann nicht bearbeitet werden");
+			alert.setHeaderText(null);
+			Optional<ButtonType> derButtonTyp = alert.showAndWait();
+			if(derButtonTyp.isPresent() && derButtonTyp.get().equals(ButtonType.YES)) {
+				dieSteuerung.beendeBerechnungen();
+			}
+		}
+	}
+	@FXML
 	private void leseFunktionEin(KeyEvent dasKeyEvent) {
 		if(dasKeyEvent.getCode() == KeyCode.ENTER)
 			dieSteuerung.erstelleFunktion(dasFunktionsTextField.getText());
 	}
+	
 
 	/**
 	 * &Uuml;berpr&uuml;ft welche HauptFunktButtons aktiv sein d&uuml;rfen, und welche nicht.
@@ -353,11 +453,13 @@ public class UebersichtController {
 	 * @param dasScrollEvent {@link ScrollEvent} mit den Informationen f&uuml;r die Verschiebung.
 	 */
 	private void canvasScroll(ScrollEvent dasScrollEvent) {
-
-		if (dasScrollEvent.isDirect() || !dasScrollEvent.isControlDown()) {
+		
+		
+		if (dasScrollEvent.isDirect() || !dasScrollEvent.isControlDown() && touchPadScroll.get()) {
 			derPlotter.addiereZuDeltaX(derPlotter.gibSkalierung() * dasScrollEvent.getDeltaX() / 50);
 			derPlotter.addiereZuDeltaY(derPlotter.gibSkalierung() * -dasScrollEvent.getDeltaY() / 50);
-		} else {
+		} else if(dasScrollEvent.isControlDown() || !touchPadScroll.get()){
+			
 			derPlotter.addiereZuSkalierung(-(dasScrollEvent.getDeltaY() * 3));
 			loescheSTRGInfo();
 		}
@@ -407,5 +509,8 @@ public class UebersichtController {
 	public void setzeFunktionEingabeAktiv(boolean aktiv) {
 		this.dasFunktionsTextField.setEditable(aktiv);
 	}
-
+	public void ladeFarben(EinstellungenController derEinstellungsController) {
+		derEinstellungsController.setzeFarben(dieStammFunktionFarbe, dieFunktionsfarbe, 
+				dieAbleitungsFarbe, dieAbleitungsfarbe2, diePunkteFarbe, touchPadScroll);
+	}
 }

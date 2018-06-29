@@ -385,7 +385,8 @@ public class Vereinfachung {
 
 				PotenzFunktion f1 = (PotenzFunktion) dasAeußereFunktionsteil;
 				PotenzFunktion f2 = (PotenzFunktion) dasInnereFunktionsteil;
-				return new PotenzFunktion(f1.gibA() * Math.pow(f2.gibA(), f1.gibP()), f1.gibP() * f2.gibP());
+				if(((PotenzFunktion) dasAeußereFunktionsteil).gibP() >= 1)
+					return new PotenzFunktion(f1.gibA() * Math.pow(f2.gibA(), f1.gibP()), f1.gibP() * f2.gibP());
 			}
 		}
 

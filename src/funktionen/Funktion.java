@@ -188,7 +188,7 @@ public class Funktion implements Serializable {
 		for (Funktionsteil fT : dieFunktionsTeile) {
 			s += " " + fT.gibString(dieFunktionsTeile.indexOf(fT) * -1, variablenName);
 		}
-		return s;
+		return s.replaceAll("\\*", "\u2219");
 	}
 
 	/**

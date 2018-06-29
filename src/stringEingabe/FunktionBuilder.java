@@ -18,7 +18,33 @@ import funktionen.Sin;
 import funktionen.Verkettung;
 import funktionen.XExponentialFunktion;
 
+/**
+ * Generiert aus einem String eine {@link Funktion}
+ * 
+ * @author Jonathan
+ *
+ */
 public class FunktionBuilder {
+
+	/**
+	 * Wandelt den Funktionsterm mit
+	 * {@link #stringZuFunktion(String, String, String)} in eine Funktion um.
+	 *
+	 * Versucht dabei den Name und die Variable der Funktion herauszufinden,
+	 * ansonsten wird von folgendem ausgegangen: <br>
+	 * <ul>
+	 * <li>funktionsName = "f"</li>
+	 * <li>variablenName = "x"</li>
+	 * </ul>
+	 * Diese werden wenn möglich nach der Form
+	 * <code>"funktionsName(variablenName) = ...</code> bestimmt.<Br>
+	 * z.B.: <code> "f(x) = ..." </code>
+	 * 
+	 * @param funktionsterm
+	 *            der Funktionsterm
+	 * @return Funktion erstellt nach dem Funktionsterm
+	 * @see #stringZuFunktion(String, String, String)
+	 */
 	public static Funktion stringZuFunktion(String funktionsterm) {
 		String variablenName = "x";
 		String funktionsName = "f";
@@ -39,6 +65,20 @@ public class FunktionBuilder {
 		return stringZuFunktion(funktionsterm, variablenName, funktionsName);
 	}
 
+	/**
+	 * Wandelt den Funktionsterm in eine Funktion um. Dafür wird der Funktionsterm
+	 * in {@link Token} umgwandelt und dann in die umgekehrte polnische Notation
+	 * umgewandelt.
+	 * 
+	 * @param funktionsterm
+	 *            Funktionsterm der umgewandelt werden soll.
+	 * @param variablenName
+	 *            variable nach der der Funktionsterm aufgelöst wird
+	 * @param funktionsName
+	 *            Name der Funktion.
+	 * @return Funktion erstellt nach dem Funktionsterm.
+	 * @see #stringZuUpn(String, String)
+	 */
 	public static Funktion stringZuFunktion(String funktionsterm, String variablenName, String funktionsName) {
 
 		ArrayList<Funktionsteil> dieFunktionsteile = new ArrayList<Funktionsteil>();
@@ -93,8 +133,8 @@ public class FunktionBuilder {
 						} else if (token2.istVariable()) {
 							stack.fuegeHinzu(new Token(new PotenzFunktion(token1.gibWert(), -1)));
 						} else if (token2.istFunktionsteil()) {
-							Funktionsteil f = new FaktorVerknuepfung(new PotenzFunktion(1, 1), new Verkettung(
-									new PotenzFunktion(token1.gibWert(), -1), token2.gibFunktionsteil()));
+							Funktionsteil f = new Verkettung(
+									new PotenzFunktion(token1.gibWert(), -1), token2.gibFunktionsteil());
 							stack.fuegeHinzu(new Token(f));
 						}
 					} else if (token1.istVariable()) {
@@ -216,8 +256,7 @@ public class FunktionBuilder {
 							double d = token1.gibWert() / Math.E;
 							Funktionsteil f;
 							if (DoubleMath.fuzzyEquals(d, Hilfsmethoden.runde(d, 1), 0.0001)) {
-								f = new Verkettung(new NatuerlicheExponentialFunktion(d),
-										token2.gibFunktionsteil());
+								f = new Verkettung(new NatuerlicheExponentialFunktion(d), token2.gibFunktionsteil());
 								stack.fuegeHinzu(new Token(f));
 							} else {
 								f = new Verkettung(new ExponentialFunktion(1, token1.gibWert()),
@@ -278,12 +317,25 @@ public class FunktionBuilder {
 						stack.fuegeHinzu(new Token(new Verkettung(new Ln(1), token1.gibFunktionsteil())));
 					}
 					break;
+				case Wurzel:
+					if (token1.istZahl()) {
+						stack.fuegeHinzu(new Token("" + Math.sqrt(token1.gibWert())));
+					} else if (token1.istVariable()) {
+						stack.fuegeHinzu(new Token(new PotenzFunktion(1, 0.5)));
+					} else if (token1.istFunktionsteil()) {
+						stack.fuegeHinzu(new Token(new Verkettung(new PotenzFunktion(1, 0.5), token1.gibFunktionsteil())));
+					}
+					break;
+				
 				}
 			}
 
 		}
 		while (!stack.istLeer()) {
-			dieFunktionsteile.add(stack.nehmeToken().gibFunktionsteil());
+			if(stack.gibToken().istFunktionsteil())
+				dieFunktionsteile.add(stack.nehmeToken().gibFunktionsteil());
+			else if(stack.gibToken().istZahl())
+				dieFunktionsteile.add(new PotenzFunktion(stack.nehmeToken().gibWert(), 0));
 		}
 		if (dieFunktionsteile.size() > 1) {
 			ArrayList<Funktionsteil> teile = new ArrayList<Funktionsteil>();
@@ -297,6 +349,12 @@ public class FunktionBuilder {
 		return f;
 	}
 
+	/**
+	 * 
+	 * @param funktionsterm
+	 * @param variablenName
+	 * @return
+	 */
 	private static ArrayList<Token> stringZuUpn(String funktionsterm, String variablenName) {
 		ArrayList<Token> ausgabe = new ArrayList<Token>();
 		Stack stack = new Stack();
@@ -338,7 +396,13 @@ public class FunktionBuilder {
 	private static ArrayList<Token> wandleFunktionsTermZuToken(String funktionsterm, String variablenName) {
 		ArrayList<Token> dieToken = new ArrayList<Token>();
 		funktionsterm = funktionsterm.toLowerCase();
+		boolean negativeZahl = false;
 		while (funktionsterm.length() > 0) {
+			if (negativeZahl) {
+				funktionsterm = zahlZuToken(funktionsterm, dieToken, negativeZahl);
+				negativeZahl = false;
+				continue;
+			}
 			if (funktionsterm.startsWith(" ")) {
 				funktionsterm = schneideAnfangWeg(funktionsterm, 1);
 				continue;
@@ -348,15 +412,29 @@ public class FunktionBuilder {
 				funktionsterm = schneideAnfangWeg(funktionsterm, 1);
 				continue;
 			case '*':
+			case '\u2219':
 				dieToken.add(new Token(Operator.Multiplikation));
 				funktionsterm = schneideAnfangWeg(funktionsterm, 1);
 				continue;
+				
 			case '/':
 				dieToken.add(new Token(Operator.Division));
 				funktionsterm = schneideAnfangWeg(funktionsterm, 1);
 				continue;
 			case '-':
-				dieToken.add(new Token(Operator.Subtraktion));
+
+				Token letztesToken = null;
+				if (dieToken.size() > 0)
+					letztesToken = dieToken.get(dieToken.size() - 1);
+
+				if (letztesToken == null || (letztesToken.istKlammer() && letztesToken.istKlammerAuf())) {
+					negativeZahl = true;
+				} else if (letztesToken.istOperator()) {
+					if(letztesToken.gibPräzendenz() > new Token(Operator.Subtraktion).gibPräzendenz())
+						negativeZahl = true;	
+				} else
+					dieToken.add(new Token(Operator.Subtraktion));
+
 				funktionsterm = schneideAnfangWeg(funktionsterm, 1);
 				continue;
 			case '+':
@@ -389,6 +467,10 @@ public class FunktionBuilder {
 				ueberpruefeVersteckteMultiplikation(dieToken);
 				dieToken.add(new Token("" + Math.PI));
 				funktionsterm = schneideAnfangWeg(funktionsterm, 2);
+			}else if (funktionsterm.startsWith("\u03c0")) {
+				ueberpruefeVersteckteMultiplikation(dieToken);
+				dieToken.add(new Token("" + Math.PI));
+				funktionsterm = schneideAnfangWeg(funktionsterm, 1);
 			} else if (funktionsterm.startsWith("e")) {
 				ueberpruefeVersteckteMultiplikation(dieToken);
 				dieToken.add(new Token("" + Math.E));
@@ -401,27 +483,49 @@ public class FunktionBuilder {
 				ueberpruefeVersteckteMultiplikation(dieToken);
 				dieToken.add(new Token(Operator.Ln));
 				funktionsterm = schneideAnfangWeg(funktionsterm, Operator.Ln.gibZeichen().length());
-			} else {
+			}else if (funktionsterm.startsWith("sqrt")) {
 				ueberpruefeVersteckteMultiplikation(dieToken);
-				String zahl = "";
-				char c;
-				if (funktionsterm.length() == 0)
-					c = ' ';
-				else
-					c = funktionsterm.toCharArray()[0];
-				while (istEineZahl(c) || c == ',' || c == '.') {
-					zahl += c;
-					funktionsterm = schneideAnfangWeg(funktionsterm, 1);
-					if (funktionsterm.length() == 0)
-						c = ' ';
-					else
-						c = funktionsterm.toCharArray()[0];
-				}
-				dieToken.add(new Token(zahl.replaceAll("\\,", "\\.")));
+				dieToken.add(new Token(Operator.Wurzel));
+				funktionsterm = schneideAnfangWeg(funktionsterm, Operator.Wurzel.gibZeichen().length());
+			}else if (funktionsterm.startsWith("\u221a")) {
+				ueberpruefeVersteckteMultiplikation(dieToken);
+				dieToken.add(new Token(Operator.Wurzel));
+				funktionsterm = schneideAnfangWeg(funktionsterm, 1);
+			} else {
+				funktionsterm = zahlZuToken(funktionsterm, dieToken, negativeZahl);
 			}
 
 		}
 		return dieToken;
+	}
+
+	private static String zahlZuToken(String funktionsterm, ArrayList<Token> dieToken, boolean negativeZahl) {
+		ueberpruefeVersteckteMultiplikation(dieToken);
+		String zahl = "";
+		char c;
+		if (funktionsterm.length() == 0)
+			c = ' ';
+		else
+			c = funktionsterm.toCharArray()[0];
+
+		while (istEineZahl(c) || c == ',' || c == '.') {
+			zahl += c;
+			funktionsterm = schneideAnfangWeg(funktionsterm, 1);
+			if (funktionsterm.length() == 0)
+				c = ' ';
+			else
+				c = funktionsterm.toCharArray()[0];
+		}
+		if (negativeZahl) {
+			if (zahl.equals(""))
+				zahl = "-1" + zahl;
+			else
+				zahl = "-" + zahl;
+
+			negativeZahl = false;
+		}
+		dieToken.add(new Token(zahl.replaceAll("\\,", "\\.")));
+		return funktionsterm;
 	}
 
 	private static void ueberpruefeVersteckteMultiplikation(ArrayList<Token> dieToken) {
@@ -447,7 +551,7 @@ public class FunktionBuilder {
 	}
 
 	public static void main(String args[]) {
-		String funktionsterm1 = "g(x) = 3x^2 + 5sin(4x-1)";
+		String funktionsterm1 = "g(x) = sqrt(sin(x))"; 
 		Funktion f = stringZuFunktion(funktionsterm1);
 		System.out.println(f);
 		System.out.println(f.gibAbleitung());

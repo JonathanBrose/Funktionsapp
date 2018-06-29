@@ -83,6 +83,8 @@ public class Token {
 			s+="Ft: "+dasFunktionsteil.toString();
 		}else if(derOperator != null) {
 			s+="Operator: "+dieZeichen;
+		}else if(istFunktion()){
+			s+="Funktion: "+dieZeichen;
 		}else if(istKlammer) {
 			s+="Klammer "+dieZeichen;
 		}else {
@@ -93,7 +95,7 @@ public class Token {
 
 	public boolean istFunktion() {
 		return this.derOperator == Operator.Sin || this.derOperator == Operator.Cos
-				||this.derOperator == Operator.Ln ;
+				||this.derOperator == Operator.Ln || this.derOperator == Operator.Wurzel;
 	}
 
 	public boolean istOperator() {

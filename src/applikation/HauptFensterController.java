@@ -80,6 +80,8 @@ public class HauptFensterController {
 	public void setzeUebersicht(BorderPane dasUebersichtPane) {
 		this.dieTabs.get(0).setContent(dasUebersichtPane);
 	}
-	
+	public void setzeEinstellung(BorderPane dasEinstellungsBorderPane) {
+		this.dieTabs.get(2).setContent(dasEinstellungsBorderPane);
+	}
 
 }

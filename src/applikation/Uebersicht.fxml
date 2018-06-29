@@ -11,7 +11,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="applikation.UebersichtController">
    <center>
-      <Canvas fx:id="dasCanvas" height="300.0" width="600.0" BorderPane.alignment="CENTER" />
+      <Canvas fx:id="dasCanvas" cacheHint="SCALE_AND_ROTATE" height="300.0" width="600.0" BorderPane.alignment="CENTER" />
    </center>
    <bottom>
     <TitledPane fx:id="dasFunktionsLabelPane" animated="false" text="Funktionsterme" BorderPane.alignment="CENTER">
@@ -21,12 +21,12 @@
          <content>
             <BorderPane>
                <center>
-                  <ScrollPane fx:id="dasScrollPane" fitToHeight="true" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
+                  <ScrollPane fx:id="dasScrollPane" fitToHeight="true" focusTraversable="false" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets bottom="-10.0" left="-10.0" top="-10.0" />
                      </BorderPane.margin>
                      <content>
-                        <GridPane fx:id="dasFunktionenGridPane" stylesheets="@radioButtons.css">
+                        <GridPane fx:id="dasFunktionenGridPane">
                           <columnConstraints>
                             <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="25.0" minWidth="0.0" prefWidth="25.0" />
                             <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" />
@@ -42,20 +42,21 @@
                           </rowConstraints>
                            <children>
                               <RadioButton fx:id="derStammFunktionButton" mnemonicParsing="false" onAction="#zeichne" styleClass="stammfunktion" />
-                              <RadioButton fx:id="derFunktionButton" mnemonicParsing="false" onAction="#zeichne" selected="true" styleClass="funktion" GridPane.rowIndex="2" />
+                              <RadioButton fx:id="derFunktionButton" mnemonicParsing="false" onAction="#zeichne" selected="true" styleClass="funktion" GridPane.rowIndex="2">
+                                 </RadioButton>
                               <RadioButton fx:id="derErsteAbleitungButton" mnemonicParsing="false" onAction="#zeichne" styleClass="ableitung1" GridPane.rowIndex="4" />
                               <RadioButton fx:id="derZweiteAbleitungButton" mnemonicParsing="false" onAction="#zeichne" styleClass="ableitung2" GridPane.rowIndex="6" />
-                              <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                              <Separator focusTraversable="false" minWidth="400.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                  <GridPane.margin>
                                     <Insets />
                                  </GridPane.margin>
                               </Separator>
-                              <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                              <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-                              <TextField fx:id="dasStammfunktionTextField" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
-                              <TextField fx:id="dasFunktionsTextField" onKeyReleased="#leseFunktionEin" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
-                              <TextField fx:id="dasAbleitungTextField1" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS" />
-                              <TextField fx:id="dasAbleitungTextField2" editable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" />
+                              <Separator focusTraversable="false" minWidth="400.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                              <Separator focusTraversable="false" minWidth="400.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                              <TextField fx:id="dasStammfunktionTextField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
+                              <TextField fx:id="dasFunktionsTextField" onKeyReleased="#leseFunktionEin" onMouseClicked="#funktionsTextFieldKlick" promptText="Geben sie hier die Funktion ein..." GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+                              <TextField fx:id="dasAbleitungTextField1" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS" />
+                              <TextField fx:id="dasAbleitungTextField2" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" />
                            </children>
                            <opaqueInsets>
                               <Insets />
