@@ -155,7 +155,7 @@ public class UebersichtController {
 				+ "-fx-background-color: #"+gibHtmlFarbe(dieAbleitungsfarbe2)+ ";"
 				+ "}";
 		
-		File radioButtonDatei = new File("radioButtons.css");
+		File radioButtonDatei = new File(System.getProperty("java.io.tmpdir")+"radioButtons.css");
 		try {
 			FileWriter derDateiSchreiber = new FileWriter(radioButtonDatei);
 			derDateiSchreiber.write(style);
@@ -322,8 +322,10 @@ public class UebersichtController {
 	}
 	@FXML
 	private void leseFunktionEin(KeyEvent dasKeyEvent) {
-		if(dasKeyEvent.getCode() == KeyCode.ENTER)
+		if(dasKeyEvent.getCode() == KeyCode.ENTER ) {
 			dieSteuerung.erstelleFunktion(dasFunktionsTextField.getText());
+			dasFunktionsTextField.end();
+		}
 	}
 	
 

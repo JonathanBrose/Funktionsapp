@@ -15,13 +15,27 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 
-
+/**
+ * Controller f&uuml;r Einstellungen.fxml<br>
+ * Verwaltet diesen Tab.
+ * @author Jonathan Brose
+ *
+ */
 public class EinstellungenController {
 	
 	@FXML 
 	private VBox dieFarbenVBox;
+	/**
+	 * Referenz zur Steuerung der App.
+	 */
 	private Steuerung dieSteuerung;
+	/**
+	 * {@link Runnable}, die ausgeführt wird wenn sich ein Farbe ändert.
+	 */
 	private Runnable aktualisiereFarbe;
+	/**
+	 *
+	*/
 	private SimpleBooleanProperty touchPadScroll;
 
 	@FXML

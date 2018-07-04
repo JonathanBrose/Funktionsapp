@@ -174,7 +174,9 @@ public class Steuerung extends Application {
 	
 
 	public void erstelleFunktion(String funktionsterm) {
-		this.setzeFunktion(stringZuFunktion(funktionsterm));
+		Funktion f = stringZuFunktion(funktionsterm);
+		if(f != null)
+			this.setzeFunktion(f);
 	}
 
 	public void setzeFunktion(Funktion dieFunktion) {

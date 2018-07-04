@@ -84,7 +84,10 @@ public class AddVerknuepfung extends Verknuepfung {
 
 	@Override
 	public String gibString(int i, String variablenName) {
-		String s = "(";
+		String s ="";
+		if(i!=0) s+="+";
+		if(i<0) s+=" ";
+		s += "(";
 		for (Funktionsteil dasFunktionsteil : dieFunktionsTeile) {
 			if (dieFunktionsTeile.indexOf(dasFunktionsteil) != 0)
 				s += " ";

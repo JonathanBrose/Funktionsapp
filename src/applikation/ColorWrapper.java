@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 	/**
 	 * Speichert eine Farbe ({@link Color}) und ermöglicht die Veränderung der Farbe über mehrere Klassen hinweg.
 	 * Dies ist nötig, da Instanzen der Klasse {@link Color} final  und somit unveränderbar sind. Also muss das ganze Objekt ersetzt werden.
-	 * @author Jonathan
+	 * @author Jonathan Brose
 	 *
 	 */
 public class ColorWrapper {

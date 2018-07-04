@@ -34,6 +34,7 @@ public class Vereinfachung {
 		ArrayList<Funktionsteil> dieAddVerknuepfungFunktionen = new ArrayList<Funktionsteil>();
 		ArrayList<Funktionsteil> dieLnFunktionen = new ArrayList<Funktionsteil>();
 		ArrayList<Funktionsteil> dieXExponentialFunktionen = new ArrayList<Funktionsteil>();
+		ArrayList<FunktionsteilPotenz> dieFunktionsteilPotenzen = new ArrayList<FunktionsteilPotenz>();
 
 		for (Funktionsteil dasFunktionsteil : dieFunktionsteile) {
 
@@ -57,6 +58,8 @@ public class Vereinfachung {
 				dieLnFunktionen.add((Ln) dasFunktionsteil);
 			}else if(dasFunktionsteil instanceof XExponentialFunktion) {
 				dieXExponentialFunktionen.add(dasFunktionsteil);
+			}else if(dasFunktionsteil instanceof FunktionsteilPotenz) {
+				dieFunktionsteilPotenzen.add((FunktionsteilPotenz) dasFunktionsteil);
 			}
 		}
 		dieFunktionsteile.clear();
@@ -81,7 +84,9 @@ public class Vereinfachung {
 		dieFunktionsteile.addAll(natuerlicheExponentialFunktionen);
 		dieFunktionsteile.addAll(dieExponentialFunktionen);
 		dieFunktionsteile.addAll(dieXExponentialFunktionen);
+		dieFunktionsteile.addAll(dieFunktionsteilPotenzen);
 		dieFunktionsteile.addAll(dieAddVerknuepfungFunktionen);
+		
 		
 
 		while (enthaeltAddVerknuepfung(dieFunktionsteile)) {
@@ -119,6 +124,22 @@ public class Vereinfachung {
 					funktionsTeile.add(dieVereinfachteAddVerknuepfung);
 					dieZuLoeschendenFunktionsteile.add(dieAddVerknuepfung);
 				}
+			}
+
+		}
+		dieAddVerknuepfungFunktionen.removeAll(dieZuLoeschendenFunktionsteile);
+
+	}
+	private static void vereinfacheAddF(ArrayList<Funktionsteil> dieAddVerknuepfungFunktionen,
+			ArrayList<Funktionsteil> funktionsTeile) {
+		ArrayList<Funktionsteil> dieZuLoeschendenFunktionsteile = new ArrayList<Funktionsteil>();
+		for (Funktionsteil dieAddVerknuepfung : dieAddVerknuepfungFunktionen) {
+			Funktionsteil dieVereinfachteAddVerknuepfung = vereinfache(
+					((AddVerknuepfung) dieAddVerknuepfung.clone()).gibFunktionsteile());
+			if (dieVereinfachteAddVerknuepfung != null) {
+					funktionsTeile.add(dieVereinfachteAddVerknuepfung);
+					dieZuLoeschendenFunktionsteile.add(dieAddVerknuepfung);
+			
 			}
 
 		}
@@ -427,6 +448,7 @@ public class Vereinfachung {
 		ArrayList<Funktionsteil> dieAddVerknuepfungFunktionen2 = new ArrayList<Funktionsteil>();
 		ArrayList<Funktionsteil> dieLnFunktionen = new ArrayList<Funktionsteil>();
 		ArrayList<Funktionsteil> dieXExponentialFunktionen = new ArrayList<Funktionsteil>();
+		ArrayList<FunktionsteilPotenz> dieFunktionsteilPotenzen = new ArrayList<FunktionsteilPotenz>();
  
 		for (Funktionsteil dasFunktionsteil : ((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile()) {
 			if (dasFunktionsteil instanceof ExponentialFunktion) {
@@ -451,12 +473,14 @@ public class Vereinfachung {
 				dieLnFunktionen.add((Ln)dasFunktionsteil);
 			}else if(dasFunktionsteil instanceof XExponentialFunktion) {
 				dieXExponentialFunktionen.add(dasFunktionsteil);
+			}else if(dasFunktionsteil instanceof FunktionsteilPotenz) {
+				dieFunktionsteilPotenzen.add((FunktionsteilPotenz) dasFunktionsteil);
 			}
 
 		}
 		((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().clear();
 		vereinfacheVerkettung(dieVerkettungFunktionen);
-		vereinfacheAdd(dieAddVerknuepfungFunktionen, dieAddVerknuepfungFunktionen2);
+		vereinfacheAddF(dieAddVerknuepfungFunktionen, dieAddVerknuepfungFunktionen2);
 		vereinfacheFaktor(dieFaktorVerknuepfungFunktionen);
 		fVereinfachePotenz(diePotenzFunktionen);
 		fVereinfacheExponential(dieExponentialFunktionen);
@@ -474,28 +498,27 @@ public class Vereinfachung {
 		fVereinfacheSin(dieSinFunktionen);
 		fVereinfacheXexponential(dieXExponentialFunktionen);
 		fVereinfacheLn(dieLnFunktionen);
-		((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().addAll(dieVerkettungFunktionen);
-		((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().addAll(dieFaktorVerknuepfungFunktionen);
-		((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().addAll(diePotenzFunktionen);
-		((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().addAll(dieCosFunktionen);
-		((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().addAll(dieSinFunktionen);
-		((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().addAll(dieLnFunktionen);
-		((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().addAll(dieXExponentialFunktionen);
-		if(dieAddVerknuepfungFunktionen2.size() == 1)
-			((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().add(dieAddVerknuepfungFunktionen2.get(0));
-		else if(dieAddVerknuepfungFunktionen2.size()>0)
-			((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().add(new AddVerknuepfung(dieAddVerknuepfungFunktionen2));
+		FaktorVerknuepfung dieFaktorVerknuepfungF = (FaktorVerknuepfung) dieFaktorVerknuepfung;
+		ArrayList<Funktionsteil> dieFunktionsteile = dieFaktorVerknuepfungF.gibFunktionsteile();
+		dieFunktionsteile.addAll(dieFunktionsteilPotenzen);
+		dieFunktionsteile.addAll(dieVerkettungFunktionen);
+		dieFunktionsteile.addAll(dieFaktorVerknuepfungFunktionen);
+		dieFunktionsteile.addAll(diePotenzFunktionen);
+		dieFunktionsteile.addAll(dieCosFunktionen);
+		dieFunktionsteile.addAll(dieSinFunktionen);
+		dieFunktionsteile.addAll(dieLnFunktionen);
+		dieFunktionsteile.addAll(dieXExponentialFunktionen);
+		dieFunktionsteile.addAll(dieAddVerknuepfungFunktionen2);
+		dieFunktionsteile.addAll(dieExponentialFunktionen);
+		dieFunktionsteile.addAll(dieNatuerlicheExponentialFunktionen);
 		
-		((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().addAll(dieExponentialFunktionen);
-		((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().addAll(dieNatuerlicheExponentialFunktionen);
-		
-		((FaktorVerknuepfung) dieFaktorVerknuepfung).fasseVorfaktorenZusammen();
-		((FaktorVerknuepfung) dieFaktorVerknuepfung).setzeA(dieFaktorVerknuepfung.gibA() * a);
-		if (dieFaktorVerknuepfung.gibA() == 0)
+		dieFaktorVerknuepfungF.fasseVorfaktorenZusammen();
+		dieFaktorVerknuepfungF.setzeA(dieFaktorVerknuepfung.gibA() * a);
+		if (dieFaktorVerknuepfungF.gibA() == 0)
 			return null;
 
-		if (((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().size() == 1) {
-			return ((FaktorVerknuepfung) dieFaktorVerknuepfung).gibFunktionsteile().get(0);
+		if (dieFunktionsteile.size() == 1) {
+			return dieFunktionsteile.get(0);
 		}
 		return dieFaktorVerknuepfung;
 	}

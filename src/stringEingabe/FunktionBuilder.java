@@ -10,6 +10,7 @@ import funktionen.ExponentialFunktion;
 import funktionen.FaktorVerknuepfung;
 import funktionen.Funktion;
 import funktionen.Funktionsteil;
+import funktionen.FunktionsteilPotenz;
 import funktionen.Hilfsmethoden;
 import funktionen.Ln;
 import funktionen.NatuerlicheExponentialFunktion;
@@ -271,7 +272,8 @@ public class FunktionBuilder {
 						} else if (token2.istVariable()) {
 							stack.fuegeHinzu(new Token(new XExponentialFunktion(1)));
 						} else if (token2.istFunktionsteil()) {
-
+							stack.fuegeHinzu(new Token(new FunktionsteilPotenz(1,
+									new PotenzFunktion(1, 1), token2.gibFunktionsteil())));
 						}
 					} else if (token1.istFunktionsteil()) {
 						if (token2.istZahl()) {
@@ -279,9 +281,11 @@ public class FunktionBuilder {
 									token1.gibFunktionsteil());
 							stack.fuegeHinzu(new Token(f));
 						} else if (token2.istVariable()) {
-
+							stack.fuegeHinzu(new Token(new FunktionsteilPotenz(1,
+									token1.gibFunktionsteil(), new PotenzFunktion(1, 1) )));
 						} else if (token2.istFunktionsteil()) {
-
+							stack.fuegeHinzu(new Token(new FunktionsteilPotenz(1,
+									token1.gibFunktionsteil(), token2.gibFunktionsteil())));
 						}
 					}
 					break;
@@ -343,17 +347,24 @@ public class FunktionBuilder {
 			dieFunktionsteile.clear();
 			dieFunktionsteile.add(new FaktorVerknuepfung(teile));
 		}
-		Funktion f = new Funktion(dieFunktionsteile);
-		f.setzeVariablenName(variablenName);
-		f.setzeFunktionsName(funktionsName);
+		
+		Funktion f;
+		try {
+			f = new Funktion(dieFunktionsteile);
+			f.setzeVariablenName(variablenName);
+			f.setzeFunktionsName(funktionsName);
+		}catch(Exception e) {
+			f = null;
+		}
 		return f;
 	}
 
 	/**
-	 * 
-	 * @param funktionsterm
-	 * @param variablenName
-	 * @return
+	 * Sortiert den Funktionsterm in die umgekehrte Polnische Notation um. Dabei wird der Funktionsterm zun&auml;chst in {@link Token} umgewandelt.
+	 * @param funktionsterm der Funktionsterm der umgewandelt werden soll.
+	 * @param variablenName Die Variable, nach der der Funktionsterm aufgel&ouml;&szlig;t wird.
+	 * @return Funktionsterm in der Umgekehrten polnischen Notation, gespeichert als {@link ArrayList} mit {@link Token}. 
+	 * @see #wandleFunktionsTermZuToken(String, String)
 	 */
 	private static ArrayList<Token> stringZuUpn(String funktionsterm, String variablenName) {
 		ArrayList<Token> ausgabe = new ArrayList<Token>();
@@ -392,7 +403,12 @@ public class FunktionBuilder {
 		}
 		return ausgabe;
 	}
-
+	/**
+	 * Wandelt den Funktionsterm von String in ein {@link ArrayList} aus {@link Token} um.
+	 * @param funktionsterm der umzuwandelnte Funktionsterm
+	 * @param variablenName die Variable nach der der Funktionstem aufgel&ouml;&szlig;t werden soll.
+	 * @return Der Funktionsterm als {@link ArrayList} aus {@link Token}
+	 */
 	private static ArrayList<Token> wandleFunktionsTermZuToken(String funktionsterm, String variablenName) {
 		ArrayList<Token> dieToken = new ArrayList<Token>();
 		funktionsterm = funktionsterm.toLowerCase();
@@ -498,7 +514,13 @@ public class FunktionBuilder {
 		}
 		return dieToken;
 	}
-
+	/**
+	 * 
+	 * @param funktionsterm
+	 * @param dieToken
+	 * @param negativeZahl
+	 * @return
+	 */
 	private static String zahlZuToken(String funktionsterm, ArrayList<Token> dieToken, boolean negativeZahl) {
 		ueberpruefeVersteckteMultiplikation(dieToken);
 		String zahl = "";
@@ -527,7 +549,11 @@ public class FunktionBuilder {
 		dieToken.add(new Token(zahl.replaceAll("\\,", "\\.")));
 		return funktionsterm;
 	}
-
+	/**
+	 * &Uuml;berpr&uuml;ft, ob eine Multiplikation n&ouml;tig ist, obwohl kein Multiplikations Operator vorhanden ist.
+	 * <br>Beispiel: 3x -> 3*x
+	 * @param 
+	 */
 	private static void ueberpruefeVersteckteMultiplikation(ArrayList<Token> dieToken) {
 		Token letztesToken = null;
 		if (dieToken.size() > 0) {
@@ -537,25 +563,26 @@ public class FunktionBuilder {
 			}
 		}
 	}
-
+	/**
+	 * Schneidet eine variable Anzahl an Chars vom Anfang des Strings s weg.
+	 * @param s der zubeschneidende String.
+	 * @param anzahlStellen anzahl der wegzuschneidenden Stellen.
+	 * @return der fertig beschnittene String
+	 */
 	private static String schneideAnfangWeg(String s, int anzahlStellen) {
 		s = s.substring(anzahlStellen);
 		return s;
 	}
-
+	/**
+	 * &Uuml;berpr&uuml;ft ob der &uuml;bergebene Charakter eine Zahl ist.
+	 * @param c der zu &uuml;berpr&uuml;fende Char.
+	 * @return true, wenn c ein Zahl ist, sonst false.
+	 */
 	private static boolean istEineZahl(char c) {
 		if (c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9'
 				|| c == '0')
 			return true;
 		return false;
-	}
-
-	public static void main(String args[]) {
-		String funktionsterm1 = "g(x) = sqrt(sin(x))"; 
-		Funktion f = stringZuFunktion(funktionsterm1);
-		System.out.println(f);
-		System.out.println(f.gibAbleitung());
-		System.out.println(f.gibAbleitung(2));
 	}
 
 }

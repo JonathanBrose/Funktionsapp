@@ -109,6 +109,47 @@ public class PotenzFunktion extends Funktionsteil {
 		return s;
 	}
 
+	public String[] getFractionString(int i, String variablenName) {
+		if(p>=0)return null;
+		double a = runde(this.a, 14);
+		double p = runde(this.p, 14);
+		String[] sA = new String[2];
+		sA[0] = "";
+		if (a == 1) {
+			sA[0] += "";
+			if (i != 0)
+				sA[0] += "+";
+			if (i < 0)
+				sA[0] += " ";
+		} else if (a == -1) {
+			sA[0] += "-";
+			if (i < 0)
+				sA[0] += " ";
+		} else {
+			if (a < 0) {
+				a *= -1;
+				sA[0] += "-";
+			} else if (i != 0) {
+				sA[0] += "+";
+			}
+			if (i < 0)
+				sA[0] += " ";
+
+			sA[0] += (a == (int) (a) ? (int) (a) + "" : ueberpruefeDouble(a)+"*");
+		}
+		sA[0] += "(";
+		sA[1]=")/";
+		p *= -1;
+		if (p == 0.5) {
+			sA[1]+= "\u221A("+variablenName+")";
+		} else if (p == 1) {
+			sA[1]+= variablenName+"";
+		}else {
+			sA[1] +="("+variablenName+ "^" + (p == (int) (p) ? (int) (p) + "" : ueberpruefeDouble(p) + ")");
+		}
+		return sA;
+	}
+	
 	@Override
 	public String[] gibVerkettungString(int i) {
 		double a = runde(this.a, 14);
