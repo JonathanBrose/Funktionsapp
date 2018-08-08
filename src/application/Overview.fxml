@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.OverviewController">
+   <center>
+      <Canvas fx:id="canvas" cacheHint="SCALE_AND_ROTATE" height="300.0" width="600.0" BorderPane.alignment="CENTER" />
+   </center>
+   <bottom>
+    <TitledPane fx:id="titledPane" animated="false" text="Function" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <content>
+            <BorderPane>
+               <center>
+                  <ScrollPane fx:id="scrollPane" fitToHeight="true" focusTraversable="false" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets bottom="-10.0" left="-10.0" top="-10.0" />
+                     </BorderPane.margin>
+                     <content>
+                        <GridPane fx:id="gridPane">
+                          <columnConstraints>
+                            <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="25.0" minWidth="0.0" prefWidth="25.0" />
+                            <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints fillHeight="false" minHeight="0.0" prefHeight="5.0" vgrow="NEVER" />
+                            <RowConstraints fillHeight="false" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints fillHeight="false" minHeight="0.0" prefHeight="5.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints fillHeight="false" minHeight="0.0" prefHeight="5.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <RadioButton fx:id="antiderivativeRadioButton" mnemonicParsing="false" onAction="#draw" styleClass="stammfunktion" />
+                              <RadioButton fx:id="functionRadioButton" mnemonicParsing="false" onAction="#draw" selected="true" styleClass="funktion" GridPane.rowIndex="2">
+                                 </RadioButton>
+                              <RadioButton fx:id="derivativeRadioButton" mnemonicParsing="false" onAction="#draw" styleClass="ableitung1" GridPane.rowIndex="4" />
+                              <RadioButton fx:id="derivative2RadioButton" mnemonicParsing="false" onAction="#draw" styleClass="ableitung2" GridPane.rowIndex="6" />
+                              <Separator focusTraversable="false" minWidth="400.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </Separator>
+                              <Separator focusTraversable="false" minWidth="400.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                              <Separator focusTraversable="false" minWidth="400.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                              <TextField fx:id="antiderivativeTextField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
+                              <TextField fx:id="functionTextField" onKeyReleased="#generateFunction" onMouseClicked="#onTextFieldClick" promptText="Type in your function here..." GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+                              <TextField fx:id="derivativeTextField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS" />
+                              <TextField fx:id="derivate2TextField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" />
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </GridPane>
+                     </content>
+                  </ScrollPane>
+               </center>
+               <right>
+                  <GridPane BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                      <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="50.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Button fx:id="mainFunctionButton1" mnemonicParsing="false" onAction="#saveAsMain1" text="-&gt;main function" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" />
+                        <Button disable="true" mnemonicParsing="false" text="-&gt;main function" GridPane.rowIndex="2" />
+                        <Button fx:id="mainFunctionButton3" mnemonicParsing="false" onAction="#saveAsMain3" text="-&gt;main function" GridPane.rowIndex="4" />
+                        <Button fx:id="mainFunctionButton4" mnemonicParsing="false" onAction="#saveAsMain4" text="-&gt;main function" GridPane.rowIndex="6" />
+                        <Separator GridPane.rowIndex="1" />
+                        <Separator GridPane.rowIndex="3" />
+                        <Separator GridPane.rowIndex="5" />
+                     </children>
+                     <BorderPane.margin>
+                        <Insets bottom="-10.0" right="-10.0" top="-12.0" />
+                     </BorderPane.margin>
+                  </GridPane>
+               </right>
+            </BorderPane>
+         </content>
+      </TitledPane>
+   </bottom>
+   <top>
+      <Label text="Press Ctrl and spin the mouswheel to zoom" BorderPane.alignment="CENTER" />
+   </top>
+</BorderPane>

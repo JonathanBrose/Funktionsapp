@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"funktionen"}]
+packageSearchIndex = [{"l":"application"},{"l":"functions"},{"l":"stringConverter"}]
