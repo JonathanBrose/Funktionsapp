@@ -333,7 +333,10 @@ public class FunctionBuilder {
 
 		}
 		while (!stack.isEmpty()) {
-			if(stack.getToken().istFunktionsteil())
+			if(stack.size()==1 && stack.getToken().isVariable()) {
+				stack.takeToken();
+				functionParts.add(new PowerFunction(1, 1));
+			}else if(stack.getToken().istFunktionsteil())
 				functionParts.add(stack.takeToken().gibFunktionsteil());
 			else if(stack.getToken().isValue())
 				functionParts.add(new PowerFunction(stack.takeToken().getValue(), 0));

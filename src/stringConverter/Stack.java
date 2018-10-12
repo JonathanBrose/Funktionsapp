@@ -29,6 +29,8 @@ public class Stack {
 	public String toString() {
 		return tokens.toString();
 	}
-	
+	public int size() {
+		return this.tokens.size();
+	}
 
 }
