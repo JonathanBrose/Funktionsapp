@@ -1,0 +1,28 @@
+<component name="libraryTable">
+  <library name="animal-sniffer-annotations-1.17">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/animal-sniffer-annotations-1.17.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/annotations-5.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/checker-qual-2.5.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/controlsfx-11.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/diff-match-patch-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/error_prone_annotations-2.2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/failureaccess-1.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/guava-27.0.1-jre.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/guava-5.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/j2objc-annotations-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/java-5.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-base-11-linux.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-controls-11-linux.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-11-linux.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-media-11-linux.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-web-11-linux.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jsr305-3.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/natives-5.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/pouch-1.14.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.8.0-beta4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
