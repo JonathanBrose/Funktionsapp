@@ -124,7 +124,7 @@ public class OverviewController {
 		style += ".ableitung2:selected  .dot {" + "-fx-background-color: #" + toHexColor(secondDerivativeColor) + ";"
 				+ "}";
 
-		File radioButtonFile = new File(System.getProperty("java.io.tmpdir") + "radioButtons.css");
+		File radioButtonFile = new File(".radioButtons.css");
 		try {
 			FileWriter fileWriter = new FileWriter(radioButtonFile);
 			fileWriter.write(style);
@@ -195,7 +195,7 @@ public class OverviewController {
 	
 	public void initLabels() {
 		if (function != null) {
-			String errorText = "antiderivate couldn´t get determined";
+			String errorText = "antiderivate couldnï¿½t get determined";
 			antiderivativeTextField.setText(antiderivative == null ? errorText : antiderivative.toString());
 			functionTextField.setText(function.toString());
 			derivativeTextField.setText(derivative.toString());
@@ -267,9 +267,9 @@ public class OverviewController {
 	@FXML
 	private void onTextFieldClick() {
 		if (!functionTextField.isEditable()) {
-			String message = "Function can´t be edited, becaus calculations are running in the curve discussion tab. Do you want to stop them?";
+			String message = "Function canï¿½t be edited, becaus calculations are running in the curve discussion tab. Do you want to stop them?";
 			Alert alert = new Alert(AlertType.CONFIRMATION, message, ButtonType.YES, ButtonType.CANCEL);
-			alert.setTitle("Function can´t be edited");
+			alert.setTitle("Function canï¿½t be edited");
 			alert.setHeaderText(null);
 			Optional<ButtonType> buttonType = alert.showAndWait();
 			if (buttonType.isPresent() && buttonType.get().equals(ButtonType.YES)) {
